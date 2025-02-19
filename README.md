@@ -6,12 +6,12 @@ Author contact: adele.westgard@uit.no
 Link to article: TBD
 The repository is created to host method developed for identifying laboratory-grown calcite (LabGrown) in _N.pachyderma_ and distinguish crust and lamellar calcite.
 
-LabGrown:
+**LabGrown:**
 Input: raw data from LA-ICP_MS as CSV files. 
 Removes contaminated data, identifies and separates laboratory grown calcite based on the presence of a 135-Ba isotope spike. 
 Output: csv files for each laser profile with clean, laboratory-grown data in ppm. 
 
-IDCrust: 
+**IDCrust: **
 Input: 
   1) Output from LabGrown as CSV files. 
   2) Info spreadsheet (as xlsx) containing information about each laser ablation profile.
