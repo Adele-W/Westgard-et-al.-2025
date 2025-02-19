@@ -1,6 +1,6 @@
 #### Clean data and identify laboratory-grown chambers ####
 
-# Copyright: Adele Westg??rd 2025
+# Copyright: Adele Westgard 2025
 # Citation: 
 
 
