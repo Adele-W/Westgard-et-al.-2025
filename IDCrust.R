@@ -1,6 +1,6 @@
 #### Identify and distinguish crust and lamellar calcite ####
 
-# Copyright: Adele Westg??rd 2025
+# Copyright: Adele Westgard 2025
 # Citation: 
 
 #N.B.! This overview file is based on laboratory-grown N.pachyderma.
