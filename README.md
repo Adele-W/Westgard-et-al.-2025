@@ -18,8 +18,8 @@ Input:
      Info in xlsx: laser shot ID, foraminifera ID, growth conditions (temperature, salinity, etc.) or core information (ID, depth, age, etc.)
 Identifies and separates data in crust from lamellar calcite using breakpoints. Converts data from ppm to mmol/mol. 
 Output: CSV file combining metadata (e.g., Foraminifera ID) and mean element/Ca in mmol/mol for crust, lamellar calcite and both components together.
-        Can be modified to give full laser profile instead of mean. 
+        Can be modified to give full laser profile or medians instead of mean values. Also provides an excelsheet of associated statistical outputs (breakpoints, F-stats, and p-values). 
 
-Citation: Westgård et al., 2025
+Citation: Westgård et al., 2026
           full citation TBC 
-Copyright: Adele Westgård 2025. 
+Copyright: Adele Westgård 2025/UiT The Arctic University of Norway 
