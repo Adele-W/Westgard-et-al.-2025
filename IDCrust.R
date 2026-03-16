@@ -1,6 +1,6 @@
 #### Identify and distinguish crust and lamellar calcite ####
 
-# Copyright: Adele Westgard 2025
+# Copyright: Adele Westgaard 2025
 # Citation: 
 
 #N.B.! This overview file is based on laboratory-grown N.pachyderma.
@@ -19,6 +19,7 @@
 library(tidyverse)
 library("readxl") 
 library(strucchange)
+library("gap")
 
 #Molar masses
 MCa43 <- 42.959
@@ -47,6 +48,10 @@ setwd("")
 # This is used to access data and creates the base for saving new data. 
 # Foram ID, chamber ID (matches ID from LabGrown), growth conditions
 overview <- read_excel("All foraminifera info sheet.xlsx") #edit name
+
+#prepare recording of statistics
+BPs <- data.frame("Fname", "BP index", "BP sec", "profile length sec", 
+                  "chowF", "df1", "df2", "chowp")
 
 #Find total length of data sheet
 len <- as.numeric(count(overview[1])) 
@@ -319,6 +324,21 @@ for (i in 2:len) { #from row below titles to end of sheet
           #Assign index for crust/lamellar transition location. 
           crust_loc <- break1 
           
+          ##CHOW test of breakpoint significance
+          matr1 <- data.frame(abl_time, MgCa_mol)[0:break1, ]
+          matr2 <- data.frame(abl_time, MgCa_mol)[break1:length(abl_time), ]
+          y1 <- matr1[,2]
+          y2 <- matr2[,2]
+          x1 <- matr1[,1]
+          x2 <- matr2[,1]
+          chow <- chow.test(y1, x1, y2, x2)
+          
+          BPsec <- abl_time[break1] #Breakpoint location in seconds
+          
+          #record breakpoint location and chow stats for all profiles
+          BPs <- rbind(BPs, c(Fname, as.numeric(break1),  BPsec, abl_max, 
+                              as.numeric(chow)))
+          
         } else  { #No breakpoint after 20 seconds.
           decision <- "crust_only" }
        
@@ -389,6 +409,7 @@ for (i in 2:len) { #from row below titles to end of sheet
     crust_Mg <- Mg_ppm[sec_5:(crust_loc)]
     crust_Ca <- Ca43_ppm[sec_5:(crust_loc)]
     
+    #in lines below: replace "mean" with "median" if preferred.
     crust_Mg_ppm <- mean(na.omit(crust_Mg))
     crust_Ca_ppm <- mean(na.omit( crust_Ca))
     
@@ -398,6 +419,7 @@ for (i in 2:len) { #from row below titles to end of sheet
     
     crust_MgCa_mol <- crust_Mg_mol/crust_Ca43_mol
     
+    #in lines below: replace "mean" with "median" if preferred.
     crust_Li_ppm <- mean(na.omit(Li_ppm[sec_5:crust_loc]))
     crust_B_ppm <- mean(na.omit(B_ppm[sec_5:crust_loc]))
     crust_Na_ppm <- mean(na.omit(Na_ppm[sec_5:crust_loc]))
@@ -433,6 +455,7 @@ for (i in 2:len) { #from row below titles to end of sheet
     lamellar_Mg <- Mg_ppm[crust_loc: length(Mg_ppm)]
     lamellar_Ca <- Ca43_ppm[crust_loc: length(Ca43_ppm)]
     
+    #in lines below: replace "mean" with "median" if preferred.
     lam_Mg_ppm <- mean(na.omit(lamellar_Mg))
     lam_Ca_ppm <- mean(na.omit(lamellar_Ca))
     
@@ -442,6 +465,7 @@ for (i in 2:len) { #from row below titles to end of sheet
     
     lam_MgCa_mol <- lam_Mg_mol/lam_Ca43_mol
     
+    #in lines below: replace "mean" with "median" if preferred.
     lam_Li_ppm <- mean(na.omit(Li_ppm[crust_loc: length(Li_ppm)]))
     lam_B_ppm <- mean(na.omit(B_ppm[crust_loc: length(B_ppm)]))
     lam_Na_ppm <- mean(na.omit(Na_ppm[crust_loc: length(Na_ppm)]))
@@ -513,6 +537,9 @@ for (i in 2:len) { #from row below titles to end of sheet
 
 #Save data table as csv file
 setwd("") # set working directory for saving data frame of all shells
-write.csv(overview, file = "Foram_Overview.csv", row.names = FALSE)
+  #trace element data
+write.csv(overview, file = "Foram_Overview.csv", row.names = FALSE) 
+  #breakpoint statistics
+write.csv(BPs, file = "breakpoint_stats.csv", row.names = FALSE)
 
 #### END ####
